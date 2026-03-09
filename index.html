@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İyi Bir İnsan Olduğunu Biliyorum</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #a1c4fd, #fad0c4, #ff9a9e);
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 3.5rem;
+      margin: 0 0 20px;
+      text-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .question {
+      font-size: 2.5rem;
+      margin: 20px 0;
+    }
+    button {
+      padding: 15px 50px;
+      font-size: 2rem;
+      margin: 15px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: white;
+      transition: all 0.4s;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    #yesBtn {
+      background: #4caf50;
+    }
+    #noBtn {
+      background: #f44336;
+    }
+    #yesBtn:hover { transform: scale(1.1); }
+    #noBtn:hover { background: #e53935; }
+    #final {
+      font-size: 2.8rem;
+      margin-top: 50px;
+      font-weight: bold;
+      line-height: 1.5;
+      min-height: 150px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #final.visible {
+      opacity: 1;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>İyi bir insan olduğunu biliyorum</h1>
+  <p class="question">İyi misin?</p>
+
+  <button id="yesBtn" onclick="yesClicked()">Evet, iyiyim</button>
+  <button id="noBtn" onclick="noClicked()">Hayır, iyi değilim</button>
+
+  <p id="final"></p>
+
+  <canvas id="confetti"></canvas>
+
+  <script>
+    let yesSize = 2;
+
+    function noClicked() {
+      yesSize += 0.6;
+      document.getElementById('yesBtn').style.fontSize = yesSize + 'rem';
+      document.getElementById('yesBtn').style.padding = (15 + yesSize*15) + 'px ' + (50 + yesSize*30) + 'px';
+
+      const messages = [
+        "Sus, iyi birisin sen...",
+        "Hadi ama, kendini kandırma, iyi birisin",
+        "İyi değilsen bile, senin gibi biri her zaman değerli",
+        "Bak, buton büyüyor çünkü sen iyisin",
+        "Tamam, pes ediyorum... Ama sen hâlâ iyi bir insansın"
+      ];
+
+      let index = Math.min(messages.length - 1, Math.floor((yesSize - 2) / 0.6));
+      document.getElementById('final').innerText = messages[index];
+
+      createConfetti(40);
+    }
+
+    function yesClicked() {
+      document.getElementById('noBtn').style.display = 'none';
+      document.getElementById('final').innerHTML = `
+        Doğum günün kutlu olsun!<br>
+        Nice mutlu yıllara 🎉<br>
+        Sen bu dünya için gerçekten iyi bir insansın<br>
+        Kendini kötüleme, her şeyin en iyisine layıksın ❤️
+      `;
+      document.getElementById('final').classList.add('visible');
+      createConfetti(120);
+    }
+
+    function createConfetti(count) {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      const colors = ['#ff0', '#f00', '#0f0', '#00f', '#ff69b4', '#fff'];
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: Math.random() * 4 + 2
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, i) => {
+          p.y += p.speed;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          if (p.y > canvas.height + 50) particles.splice(i, 1);
+        });
+        if (particles.length) requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // Sayfa açılınca hafif konfeti
+    createConfetti(40);
+  </script>
+
+</body>
+</html>
