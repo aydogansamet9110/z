@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>17. Yaşın Kutlu Olsun Zümra Melek! 🎉</title>
+  <title>Zümra Melek'e Özel</title>
   <style>
     body {
       margin: 0;
@@ -19,36 +19,40 @@
       overflow: hidden;
     }
     h1 {
-      font-size: 4rem;
-      margin: 0 0 10px;
+      font-size: 3.8rem;
+      margin: 0 0 30px;
       text-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
     .name {
-      font-size: 3.2rem;
+      font-size: 3rem;
       color: #fff200;
-      margin: 10px 0 30px;
-      text-shadow: 0 0 15px #ff4757;
-    }
-    .message {
-      font-size: 2.1rem;
-      line-height: 1.7;
-      max-width: 800px;
-      margin: 20px auto;
+      margin-bottom: 40px;
     }
     button {
-      padding: 18px 50px;
-      font-size: 1.8rem;
-      background: #4caf50;
+      padding: 20px 60px;
+      font-size: 2.2rem;
+      background: #ff4757;
       color: white;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      margin-top: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: all 0.4s;
     }
     button:hover {
       transform: scale(1.1);
-      background: #45a049;
+      background: #ff6b81;
+    }
+    .message {
+      margin-top: 40px;
+      font-size: 2.1rem;
+      line-height: 1.7;
+      max-width: 800px;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    .visible {
+      opacity: 1;
     }
     canvas {
       position: fixed;
@@ -60,23 +64,37 @@
 </head>
 <body>
 
-  <h1>🎂 Doğum Günün Kutlu Olsun 🎉</h1>
-  <p class="name">Zümra Melek</p>
-  
-  <div class="message">
-    Nice mutlu yıllara...<br><br>
+  <h1>🎂 Zümra Melek 🎉</h1>
+  <p class="name">17. Yaşın Kutlu Olsun!</p>
+
+  <button onclick="openMessage()">Beni Aç</button>
+
+  <div class="message" id="mesaj">
+    Doğum günün kutlu olsun Zümra Melek!<br><br>
+    Nice mutlu yıllara...<br>
     Umarım her şey dilediğin gibi olur<br>
     17. yaşın kutlu olsun!<br><br>
     İyi ki varsın<br>
     Her şeyin en iyisini hak ediyorsun ❤️
   </div>
 
-  <button onclick="patlat()">Konfeti Patlat! 🎈</button>
+  <!-- Arka plan müziği -->
+  <audio id="bgMusic" loop>
+    <source src="https://assets.mixkit.co/sfx/preview/296/296-preview.mp3" type="audio/mpeg">
+  </audio>
 
   <canvas id="confetti"></canvas>
 
   <script>
-    function patlat() {
+    const music = document.getElementById('bgMusic');
+
+    function openMessage() {
+      music.play();
+      document.getElementById('mesaj').classList.add('visible');
+      createConfetti(150);
+    }
+
+    function createConfetti(count) {
       const canvas = document.getElementById('confetti');
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
@@ -85,7 +103,7 @@
       let particles = [];
       const colors = ['#ff4757', '#fff200', '#2ed573', '#1e90ff', '#ff69b4'];
 
-      for (let i = 0; i < 200; i++) {
+      for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height - canvas.height,
@@ -113,8 +131,6 @@
       }
       draw();
     }
-
-    window.onload = () => setTimeout(patlat, 800);
   </script>
 
 </body>
